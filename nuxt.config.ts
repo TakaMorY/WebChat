@@ -8,27 +8,49 @@ export default defineNuxtConfig({
     'pinia-plugin-persistedstate/nuxt',
     '@vueuse/nuxt',
 
-  ], runtimeConfig: {
+  ],
+  runtimeConfig: {
     supabaseUrl: process.env.SUPABASE_URL,
-    supabaseKey: process.env.SUPABASE_KEY,
+    supabaseKey: process.env.SUPABASE_KEY
   },
+
+
+
+  ssr: true,
+
   nitro: {
     preset: 'vercel',
-    compressPublicAssets: {
-      gzip: true,
-      brotli: true
+    devProxy: {
+      // Прокси для API в dev режиме
     },
-    prerender: {
-      crawlLinks: false,
-      routes: ['/']
+    timing: false // Отключаем timing в dev
+  },
+
+  // Оптимизации Vite для dev
+  vite: {
+    optimizeDeps: {
+      include: ['@supabase/supabase-js']
+    },
+    server: {
+      warmup: {
+        clientFiles: [
+          '/pages/index.vue',
+          '/pages/login.vue',
+          '/pages/register.vue'
+        ]
+      }
     }
   },
 
-  // Оптимизации сборки
-  build: {
-    transpile: ['@supabase/supabase-js']
+  // Отключаем ненужные функции в dev
+  features: {
+    devLogs: false
   },
 
-  // Отключи ненужные модули
-
+  app: {
+    head: {
+      title: 'WebChat',
+      htmlAttrs: { lang: 'ru' }
+    }
+  }
 })
