@@ -1,181 +1,174 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-purple-50 to-white py-12">
+  <div class="min-h-screen bg-gray-50 py-8">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Заголовок -->
       <div class="mb-8">
         <h1 class="text-3xl font-bold text-gray-900">Профиль пользователя</h1>
-        <p class="text-gray-600 mt-2">Управляйте вашей учетной записью и настройками</p>
+        <p class="text-gray-600 mt-2">Управление вашей учетной записью</p>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Боковая панель -->
+        <!-- Левая колонка - Аватар и основная информация -->
         <div class="lg:col-span-1">
-          <div class="bg-white rounded-2xl shadow-sm border border-purple-100 p-6">
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+            <!-- Аватар -->
             <div class="text-center">
               <div class="relative inline-block">
-                <img class="w-24 h-24 rounded-2xl object-cover border-4 border-purple-100"
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
-                  alt="Профиль">
-                <div class="absolute bottom-0 right-0 w-6 h-6 bg-green-400 rounded-full border-2 border-white"></div>
+                <img :src="user.avatar_url || '/default-avatar.png'" 
+                     alt="Аватар"
+                     class="w-32 h-32 rounded-full mx-auto border-4 border-purple-100 object-cover">
+                <button @click="showAvatarModal = true"
+                        class="absolute bottom-0 right-0 bg-purple-500 text-white p-2 rounded-full hover:bg-purple-600 transition-colors">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  </svg>
+                </button>
               </div>
-              <h2 class="mt-4 text-xl font-bold text-gray-900">Алексей Петров</h2>
-              <p class="text-purple-600">Senior Developer</p>
-              <div class="mt-2 flex items-center justify-center text-gray-500">
-                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                </svg>
-                <span class="text-sm">Москва, Россия</span>
-              </div>
+              <h2 class="text-xl font-semibold text-gray-900 mt-4">{{ user.name }} {{ user.secondname }}</h2>
+              <p class="text-gray-600">{{ user.email }}</p>
+              <p class="text-sm text-gray-500 mt-2">
+                Участник с {{ new Date(user.created_at).toLocaleDateString('ru-RU') }}
+              </p>
             </div>
 
-            <nav class="mt-8 space-y-2">
-              <a href="#" class="flex items-center px-4 py-3 text-purple-600 bg-purple-50 rounded-xl font-medium">
-                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                </svg>
-                Общая информация
-              </a>
-              <a href="#"
-                class="flex items-center px-4 py-3 text-gray-600 hover:text-purple-600 hover:bg-purple-50 rounded-xl transition-colors">
-                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
-                  </path>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                </svg>
-                Настройки аккаунта
-              </a>
-              <a href="#"
-                class="flex items-center px-4 py-3 text-gray-600 hover:text-purple-600 hover:bg-purple-50 rounded-xl transition-colors">
-                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
-                  </path>
-                </svg>
-                Уведомления
-              </a>
-              <a href="#"
-                class="flex items-center px-4 py-3 text-gray-600 hover:text-purple-600 hover:bg-purple-50 rounded-xl transition-colors">
-                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
-                  </path>
-                </svg>
-                Безопасность
-              </a>
-            </nav>
+            <!-- Статистика -->
+            <div class="mt-6 space-y-3">
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-600">Статус</span>
+                <span class="text-green-600 font-medium">Активен</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-600">Последний вход</span>
+                <span class="text-gray-900">Сегодня</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Основной контент -->
-        <div class="lg:col-span-2 space-y-8">
-          <!-- Общая информация -->
-          <div class="bg-white rounded-2xl shadow-sm border border-purple-100 p-6">
-            <h3 class="text-xl font-semibold text-gray-900 mb-6">Общая информация</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Имя</label>
-                <input type="text" value="Алексей"
-                  class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Фамилия</label>
-                <input type="text" value="Петров"
-                  class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+        <!-- Правая колонка - Настройки -->
+        <div class="lg:col-span-2 space-y-6">
+          <!-- Основная информация -->
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Основная информация</h3>
+            <form @submit.prevent="updateProfile" class="space-y-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Имя</label>
+                  <input type="text" v-model="profileForm.name" 
+                         class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Фамилия</label>
+                  <input type="text" v-model="profileForm.secondname" 
+                         class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                <input type="email" value="alexey.petrov@example.com"
-                  class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <input type="email" v-model="profileForm.email" 
+                       class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                       disabled>
+                <p class="text-sm text-gray-500 mt-1">Email нельзя изменить</p>
+              </div>
+              <button type="submit" :disabled="profileLoading"
+                      class="bg-purple-500 text-white px-6 py-3 rounded-xl hover:bg-purple-600 transition-colors disabled:opacity-50">
+                <span v-if="profileLoading">Сохранение...</span>
+                <span v-else>Сохранить изменения</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Смена пароля -->
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Смена пароля</h3>
+            <form @submit.prevent="changePassword" class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Текущий пароль</label>
+                <input :type="showCurrentPassword ? 'text' : 'password'" v-model="passwordForm.currentPassword" 
+                       class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Телефон</label>
-                <input type="tel" value="+7 (999) 123-45-67"
-                  class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Новый пароль</label>
+                <input :type="showNewPassword ? 'text' : 'password'" v-model="passwordForm.newPassword" 
+                       class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
               </div>
-              <div class="md:col-span-2">
-                <label class="block text-sm font-medium text-gray-700 mb-2">О себе</label>
-                <textarea rows="3"
-                  class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">Senior разработчик с 8-летним опытом работы в веб-разработке. Специализируюсь на современных JavaScript фреймворках.</textarea>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Подтвердите новый пароль</label>
+                <input :type="showConfirmPassword ? 'text' : 'password'" v-model="passwordForm.confirmPassword" 
+                       class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
               </div>
-            </div>
-            <div class="mt-6 flex justify-end">
-              <button
-                class="bg-purple-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-purple-700 transition-colors">
-                Сохранить изменения
+              <button type="submit" :disabled="passwordLoading"
+                      class="bg-purple-500 text-white px-6 py-3 rounded-xl hover:bg-purple-600 transition-colors disabled:opacity-50">
+                <span v-if="passwordLoading">Смена пароля...</span>
+                <span v-else>Сменить пароль</span>
               </button>
-            </div>
+            </form>
           </div>
 
-          <!-- Статистика -->
-          <div class="bg-white rounded-2xl shadow-sm border border-purple-100 p-6">
-            <h3 class="text-xl font-semibold text-gray-900 mb-6">Статистика аккаунта</h3>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div class="text-center p-4 bg-purple-50 rounded-xl">
-                <div class="text-2xl font-bold text-purple-600">1,247</div>
-                <div class="text-sm text-gray-600">Всего сообщений</div>
-              </div>
-              <div class="text-center p-4 bg-purple-50 rounded-xl">
-                <div class="text-2xl font-bold text-purple-600">12</div>
-                <div class="text-sm text-gray-600">Активные чаты</div>
-              </div>
-              <div class="text-center p-4 bg-purple-50 rounded-xl">
-                <div class="text-2xl font-bold text-purple-600">156</div>
-                <div class="text-sm text-gray-600">Контакты</div>
-              </div>
-              <div class="text-center p-4 bg-purple-50 rounded-xl">
-                <div class="text-2xl font-bold text-green-500">Online</div>
-                <div class="text-sm text-gray-600">Статус</div>
-              </div>
-            </div>
+          <!-- Опасная зона -->
+          <div class="bg-white rounded-2xl shadow-sm border border-red-200 p-6">
+            <h3 class="text-lg font-semibold text-red-700 mb-4">Опасная зона</h3>
+            <p class="text-gray-600 mb-4">Удаление аккаунта невозможно отменить. Все ваши данные будут безвозвратно удалены.</p>
+            <button @click="showDeleteModal = true"
+                    class="bg-red-500 text-white px-6 py-3 rounded-xl hover:bg-red-600 transition-colors">
+              Удалить аккаунт
+            </button>
           </div>
+        </div>
+      </div>
+    </div>
 
-          <!-- Действия -->
-          <div class="bg-white rounded-2xl shadow-sm border border-purple-100 p-6">
-            <h3 class="text-xl font-semibold text-gray-900 mb-6">Действия с аккаунтом</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <button
-                class="flex items-center justify-center p-4 border border-gray-300 rounded-xl hover:bg-purple-50 transition-colors text-gray-700">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
-                </svg>
-                Экспорт данных
-              </button>
-              <button
-                class="flex items-center justify-center p-4 border border-gray-300 rounded-xl hover:bg-purple-50 transition-colors text-gray-700">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
-                  </path>
-                </svg>
-                Сменить пароль
-              </button>
-              <button
-                class="flex items-center justify-center p-4 border border-gray-300 rounded-xl hover:bg-purple-50 transition-colors text-gray-700">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                  </path>
-                </svg>
-                Справка
-              </button>
-              <button
-                class="flex items-center justify-center p-4 border border-red-300 rounded-xl hover:bg-red-50 transition-colors text-red-600">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
-                  </path>
-                </svg>
-                Выйти из аккаунта
-              </button>
-            </div>
+    <!-- Модальное окно смены аватара -->
+    <div v-if="showAvatarModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Смена аватара</h3>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">URL аватара</label>
+            <input type="text" v-model="avatarForm.url" 
+                   placeholder="https://example.com/avatar.jpg"
+                   class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
           </div>
+          <div class="flex justify-end space-x-3">
+            <button @click="showAvatarModal = false" 
+                    class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors">
+              Отмена
+            </button>
+            <button @click="updateAvatar" :disabled="avatarLoading"
+                    class="bg-purple-500 text-white px-6 py-2 rounded-xl hover:bg-purple-600 transition-colors disabled:opacity-50">
+              <span v-if="avatarLoading">Сохранение...</span>
+              <span v-else>Сохранить</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Модальное окно удаления аккаунта -->
+    <div v-if="showDeleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4">
+        <h3 class="text-lg font-semibold text-red-700 mb-4">Удаление аккаунта</h3>
+        <p class="text-gray-600 mb-4">Вы уверены, что хотите удалить свой аккаунт? Это действие нельзя отменить.</p>
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Введите "УДАЛИТЬ" для подтверждения
+          </label>
+          <input type="text" v-model="deleteConfirmation" 
+                 class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+        </div>
+        <div class="flex justify-end space-x-3">
+          <button @click="showDeleteModal = false" 
+                  class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors">
+            Отмена
+          </button>
+          <button @click="deleteAccount" :disabled="deleteConfirmation !== 'УДАЛИТЬ' || deleteLoading"
+                  class="bg-red-500 text-white px-6 py-2 rounded-xl hover:bg-red-600 transition-colors disabled:opacity-50">
+            <span v-if="deleteLoading">Удаление...</span>
+            <span v-else>Удалить аккаунт</span>
+          </button>
         </div>
       </div>
     </div>
@@ -183,8 +176,157 @@
 </template>
 
 <script setup>
-useSeoMeta({
-  title: 'Мой профиль - WebChat',
-  description: 'Управление профилем пользователя WebChat'
-})
+definePageMeta({
+  middleware: 'auth'
+});
+
+import { useAuthStore } from '@/stores/auth';
+
+const authStore = useAuthStore();
+const user = ref(authStore.user);
+
+// Состояния модальных окон
+const showAvatarModal = ref(false);
+const showDeleteModal = ref(false);
+
+// Состояния загрузки
+const profileLoading = ref(false);
+const passwordLoading = ref(false);
+const avatarLoading = ref(false);
+const deleteLoading = ref(false);
+
+// Формы
+const profileForm = reactive({
+  name: user.value?.name || '',
+  secondname: user.value?.secondname || '',
+  email: user.value?.email || ''
+});
+
+const passwordForm = reactive({
+  currentPassword: '',
+  newPassword: '',
+  confirmPassword: ''
+});
+
+const avatarForm = reactive({
+  url: user.value?.avatar_url || ''
+});
+
+const deleteConfirmation = ref('');
+
+// Показать/скрыть пароли
+const showCurrentPassword = ref(false);
+const showNewPassword = ref(false);
+const showConfirmPassword = ref(false);
+
+// Обновление профиля
+async function updateProfile() {
+  if (profileLoading.value) return;
+  
+  profileLoading.value = true;
+  try {
+    const updatedUser = await $fetch(`/api/users/${user.value.id}`, {
+      method: 'PATCH',
+      body: {
+        name: profileForm.name,
+        secondname: profileForm.secondname
+      }
+    });
+
+    // Обновляем store
+    authStore.user = updatedUser;
+    user.value = updatedUser;
+    
+    alert('Профиль успешно обновлен!');
+  } catch (error) {
+    alert(error.data?.statusMessage || 'Ошибка при обновлении профиля');
+  } finally {
+    profileLoading.value = false;
+  }
+}
+
+// Смена пароля
+async function changePassword() {
+  if (passwordLoading.value) return;
+  
+  if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+    alert('Новые пароли не совпадают');
+    return;
+  }
+
+  if (passwordForm.newPassword.length < 6) {
+    alert('Новый пароль должен содержать минимум 6 символов');
+    return;
+  }
+
+  passwordLoading.value = true;
+  try {
+    await $fetch(`/api/users/${user.value.id}/password`, {
+      method: 'PATCH',
+      body: {
+        currentPassword: passwordForm.currentPassword,
+        newPassword: passwordForm.newPassword
+      }
+    });
+
+    // Очищаем форму
+    passwordForm.currentPassword = '';
+    passwordForm.newPassword = '';
+    passwordForm.confirmPassword = '';
+    
+    alert('Пароль успешно изменен!');
+  } catch (error) {
+    alert(error.data?.statusMessage || 'Ошибка при смене пароля');
+  } finally {
+    passwordLoading.value = false;
+  }
+}
+
+// Обновление аватара
+async function updateAvatar() {
+  if (avatarLoading.value) return;
+  
+  avatarLoading.value = true;
+  try {
+    const updatedUser = await $fetch(`/api/users/${user.value.id}`, {
+      method: 'PATCH',
+      body: {
+        avatar_url: avatarForm.url
+      }
+    });
+
+    // Обновляем store
+    authStore.user = updatedUser;
+    user.value = updatedUser;
+    
+    showAvatarModal.value = false;
+    alert('Аватар успешно обновлен!');
+  } catch (error) {
+    alert(error.data?.statusMessage || 'Ошибка при обновлении аватара');
+  } finally {
+    avatarLoading.value = false;
+  }
+}
+
+// Удаление аккаунта
+async function deleteAccount() {
+  if (deleteLoading.value) return;
+  
+  deleteLoading.value = true;
+  try {
+    await $fetch(`/api/users/${user.value.id}`, {
+      method: 'DELETE'
+    });
+
+    // Выходим из аккаунта
+    await authStore.logout();
+    await navigateTo('/');
+    
+    alert('Аккаунт успешно удален');
+  } catch (error) {
+    alert(error.data?.statusMessage || 'Ошибка при удалении аккаунта');
+  } finally {
+    deleteLoading.value = false;
+  }
+}
 </script>
