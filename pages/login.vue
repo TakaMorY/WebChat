@@ -121,7 +121,8 @@
 
 <script setup>
 definePageMeta({
-    middleware: 'nonauth'
+    middleware: 'nonauth',
+    layout: false,
 });
 
 import { useAuthStore } from '@/stores/auth';

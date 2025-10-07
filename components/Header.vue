@@ -21,7 +21,7 @@
                         <div>
                             <span
                                 class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent">WebChat</span>
-                            <div class="text-xs text-purple-400 font-medium">by TechSolutions</div>
+                            <div class="text-xs text-purple-400 font-medium">by NimbleSites</div>
                         </div>
                     </NuxtLink>
                 </div>
@@ -114,7 +114,8 @@
                         @click="closeMobileMenu">
                         О компании
                     </a>
-                    <div class="pt-4 border-t border-purple-100 flex flex-col space-y-3">
+                    <div v-if="!authStore.isAuthenticated"
+                        class="pt-4 border-t border-purple-100 flex flex-col space-y-3">
                         <NuxtLink to="/login"
                             class="text-gray-700 hover:text-purple-600 font-medium py-2 transition-colors"
                             @click="closeMobileMenu">
@@ -124,6 +125,21 @@
                             class="bg-gradient-to-r from-purple-500 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-purple-600 hover:to-purple-700 transition-all text-center">
                             Регистрация
                         </NuxtLink>
+                    </div>
+                    <div v-if="authStore.isAuthenticated"
+                        class=" lg:flex lg:items-center gap-x-2 hover:underline hover:underline-offset-4 transition-all duration-100 ease-linear">
+                        <button href="#" @click="logout">Выйти из аккаунта</button>
+                        <button @click="logout" class=" hover:underline hover:underline-offset-4 hover:w-fit transition-all duration-100
+                            ease-linear">
+
+                            <!-- <svg class="w-6 h-6 text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 16 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M4 8h11m0 0-4-4m4 4-4 4m-5 3H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h3" />
+                            </svg> -->
+                        </button>
+
                     </div>
                 </div>
             </div>
