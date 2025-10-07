@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   modules: [
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
@@ -13,9 +13,22 @@ export default defineNuxtConfig({
     supabaseKey: process.env.SUPABASE_KEY,
   },
   nitro: {
-    compressPublicAssets: true,
+    preset: 'vercel',
+    compressPublicAssets: {
+      gzip: true,
+      brotli: true
+    },
     prerender: {
-      crawlLinks: false
+      crawlLinks: false,
+      routes: ['/']
     }
   },
+
+  // Оптимизации сборки
+  build: {
+    transpile: ['@supabase/supabase-js']
+  },
+
+  // Отключи ненужные модули
+
 })
