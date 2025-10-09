@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   modules: [
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
@@ -23,32 +23,11 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: 'vercel',
-    devProxy: {
-      // Прокси для API в dev режиме
-    },
-    timing: false // Отключаем timing в dev
+
   },
 
-  // Оптимизации Vite для dev
-  vite: {
-    optimizeDeps: {
-      include: ['@supabase/supabase-js']
-    },
-    server: {
-      warmup: {
-        clientFiles: [
-          '/pages/index.vue',
-          '/pages/login.vue',
-          '/pages/register.vue'
-        ]
-      }
-    }
-  },
 
-  // Отключаем ненужные функции в dev
-  features: {
-    devLogs: false
-  },
+
 
   app: {
     head: {
