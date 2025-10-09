@@ -1,33 +1,22 @@
 import { createClient } from '@supabase/supabase-js'
 
-export default function useSupabase() {
+// Функция для получения supabase клиента
+export const useSupabase = () => {
     const config = useRuntimeConfig()
 
-    // Валидация конфигурации
+    // Простая проверка - если нет переменных, вернем null
     if (!config.supabaseUrl || !config.supabaseKey) {
-        throw new Error(
-            'Supabase configuration is missing. ' +
-            'Please check your environment variables: SUPABASE_URL and SUPABASE_KEY'
-        )
+        console.error('Missing Supabase environment variables')
+        return null
     }
 
-    // Создаем клиент с оптимальными настройками
-    const supabase = createClient(config.supabaseUrl, config.supabaseKey, {
-        auth: {
-            autoRefreshToken: true,
-            persistSession: false,
-            detectSessionInUrl: false,
-            flowType: 'pkce'
-        },
-        global: {
-            headers: {
-                'X-Client-Info': 'nuxt-chat-app'
-            }
-        }
-    })
-
-    return supabase
+    try {
+        return createClient(config.supabaseUrl, config.supabaseKey)
+    } catch (error) {
+        console.error('Error creating Supabase client:', error)
+        return null
+    }
 }
 
-// Экспортируем инстанс для API routes
+// Создаем инстанс для API routes
 export const supabase = useSupabase()
