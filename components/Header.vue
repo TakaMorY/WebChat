@@ -79,19 +79,40 @@
                         </NuxtLink>
                     </div>
                 </div>
-                <div v-if="authStore.isAuthenticated"
-                    class="hidden lg:flex lg:items-center gap-x-2 hover:underline hover:underline-offset-4 transition-all duration-100 ease-linear">
-                    <button href="#" @click="logout">Выйти из аккаунта</button>
-                    <button @click="logout" class=" hover:underline hover:underline-offset-4 hover:w-fit transition-all duration-100
-                            ease-linear">
 
-                        <svg class="w-6 h-6 text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" viewBox="0 0 16 16">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 8h11m0 0-4-4m4 4-4 4m-5 3H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h3" />
+                <!-- Блок пользователя (авторизован) -->
+                <div v-if="authStore.isAuthenticated" class="hidden lg:flex items-center space-x-4">
+                    <!-- Аватар и имя пользователя (кликабельные) -->
+                    <NuxtLink to="/profile" class="flex items-center space-x-3 group cursor-pointer">
+                        <!-- Аватар -->
+                        <div class="relative">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center text-white font-semibold text-sm group-hover:scale-105 transition-transform"
+                                v-if="!userAvatar">
+                                {{ userInitials }}
+                            </div>
+                            <img v-else :src="userAvatar" alt="Аватар"
+                                class="w-10 h-10 rounded-full object-cover border-2 border-purple-200 group-hover:scale-105 transition-transform">
+                        </div>
+
+                        <!-- Имя пользователя -->
+                        <div class="flex flex-col">
+                            <span
+                                class="text-sm font-medium text-gray-900 group-hover:text-purple-600 transition-colors">{{
+                                userName }}</span>
+                            <span class="text-xs text-gray-500">Онлайн</span>
+                        </div>
+                    </NuxtLink>
+
+                    <!-- Кнопка выхода -->
+                    <button @click="logout"
+                        class="flex items-center space-x-2 bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2.5 rounded-xl hover:from-red-600 hover:to-red-700 transition-all shadow-lg shadow-red-200 group">
+                        <svg class="w-4 h-4 group-hover:rotate-90 transition-transform" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                         </svg>
+                        <span>Выйти</span>
                     </button>
-
                 </div>
             </div>
 
@@ -114,6 +135,41 @@
                         @click="closeMobileMenu">
                         О компании
                     </a>
+
+                    <!-- Блок пользователя в мобильном меню -->
+                    <div v-if="authStore.isAuthenticated" class="pt-4 border-t border-purple-100">
+                        <NuxtLink to="/profile" class="flex items-center space-x-3 mb-4 group" @click="closeMobileMenu">
+                            <!-- Аватар -->
+                            <div class="relative">
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center text-white font-semibold text-sm group-hover:scale-105 transition-transform"
+                                    v-if="!userAvatar">
+                                    {{ userInitials }}
+                                </div>
+                                <img v-else :src="userAvatar" alt="Аватар"
+                                    class="w-12 h-12 rounded-full object-cover border-2 border-purple-200 group-hover:scale-105 transition-transform">
+                            </div>
+
+                            <!-- Имя пользователя -->
+                            <div class="flex flex-col">
+                                <span
+                                    class="text-sm font-medium text-gray-900 group-hover:text-purple-600 transition-colors">{{
+                                    userName }}</span>
+                                <span class="text-xs text-gray-500">Онлайн</span>
+                            </div>
+                        </NuxtLink>
+
+                        <!-- Кнопка выхода в мобильном меню -->
+                        <button @click="logout"
+                            class="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-3 rounded-xl hover:from-red-600 hover:to-red-700 transition-all shadow-lg shadow-red-200 group">
+                            <svg class="w-4 h-4 group-hover:rotate-90 transition-transform" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                            <span>Выйти из аккаунта</span>
+                        </button>
+                    </div>
+
                     <div v-if="!authStore.isAuthenticated"
                         class="pt-4 border-t border-purple-100 flex flex-col space-y-3">
                         <NuxtLink to="/login"
@@ -126,21 +182,6 @@
                             Регистрация
                         </NuxtLink>
                     </div>
-                    <div v-if="authStore.isAuthenticated"
-                        class=" lg:flex lg:items-center gap-x-2 hover:underline hover:underline-offset-4 transition-all duration-100 ease-linear">
-                        <button href="#" @click="logout">Выйти из аккаунта</button>
-                        <button @click="logout" class=" hover:underline hover:underline-offset-4 hover:w-fit transition-all duration-100
-                            ease-linear">
-
-                            <!-- <svg class="w-6 h-6 text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 16 16">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M4 8h11m0 0-4-4m4 4-4 4m-5 3H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h3" />
-                            </svg> -->
-                        </button>
-
-                    </div>
                 </div>
             </div>
         </div>
@@ -151,6 +192,21 @@
 import { useAuthStore } from '@/stores/auth';
 
 const authStore = useAuthStore();
+
+// Вычисляемые свойства для данных пользователя
+const userAvatar = computed(() => authStore.user?.avatar_url || null);
+const userName = computed(() => {
+    if (authStore.user?.name && authStore.user?.secondname) {
+        return `${authStore.user.name} ${authStore.user.secondname}`;
+    }
+    return authStore.user?.email || 'Пользователь';
+});
+const userInitials = computed(() => {
+    if (authStore.user?.name && authStore.user?.secondname) {
+        return `${authStore.user.name[0]}${authStore.user.secondname[0]}`.toUpperCase();
+    }
+    return authStore.user?.email?.[0]?.toUpperCase() || 'U';
+});
 
 const logout = () => {
     authStore.logout();

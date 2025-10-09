@@ -1,0 +1,1 @@
+import{_ as t,c as r,o,G as s}from"./rPPG3L9u.js";const c={},n={class:"min-h-screen bg-gradient-to-br from-purple-50 via-white to-purple-100"};function a(e,l){return o(),r("div",n,[s(e.$slots,"default")])}const i=t(c,[["render",a]]);export{i as default};
