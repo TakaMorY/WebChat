@@ -1,37 +1,27 @@
 import { createClient } from '@supabase/supabase-js'
 
-export default function useSupabase() {
-    const config = useRuntimeConfig()
+// Простая функция для получения Supabase клиента
+export const useSupabase = () => {
+    // Только на сервере
+    if (process.server) {
+        const config = useRuntimeConfig()
 
-    console.log('🔧 Initializing Supabase client...')
-    console.log('📋 Config check:', {
-        hasUrl: !!config.supabaseUrl,
-        hasKey: !!config.supabaseKey,
-        urlLength: config.supabaseUrl?.length,
-        keyLength: config.supabaseKey?.length
-    })
+        console.log('🔧 Creating Supabase client in utility')
+        console.log('URL exists:', !!config.supabaseUrl)
+        console.log('KEY exists:', !!config.supabaseKey)
 
-    // Проверяем наличие обязательных переменных
-    if (!config.supabaseUrl || !config.supabaseKey) {
-        console.error('❌ Missing Supabase environment variables')
-        throw new Error('Supabase URL and Key are required')
+        if (!config.supabaseUrl || !config.supabaseKey) {
+            throw new Error('Supabase environment variables are missing')
+        }
+
+        return createClient(config.supabaseUrl, config.supabaseKey, {
+            auth: { persistSession: false }
+        })
     }
 
-    const supabase = createClient(
-        config.supabaseUrl,
-        config.supabaseKey,
-        {
-            auth: {
-                autoRefreshToken: false,
-                persistSession: false,
-                detectSessionInUrl: false
-            }
-        }
-    )
-
-    console.log('✅ Supabase client created')
-    return supabase
+    // На клиенте возвращаем null или обрабатываем иначе
+    return null
 }
 
-// Экспортируем инстанс для использования в API routes
-export const supabase = useSupabase()
+// Экспортируем готовый инстанс (осторожно - может быть проблема с контекстом)
+// export const supabase = useSupabase()
