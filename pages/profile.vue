@@ -14,16 +14,15 @@
             <!-- Аватар -->
             <div class="text-center">
               <div class="relative inline-block">
-                <img :src="user.avatar_url || '/default-avatar.png'" 
-                     alt="Аватар"
-                     class="w-32 h-32 rounded-full mx-auto border-4 border-purple-100 object-cover">
+                <img :src="user.avatar_url || '/default-avatar.png'" alt="Аватар"
+                  class="w-32 h-32 rounded-full mx-auto border-4 border-purple-100 object-cover">
                 <button @click="showAvatarModal = true"
-                        class="absolute bottom-0 right-0 bg-purple-500 text-white p-2 rounded-full hover:bg-purple-600 transition-colors">
+                  class="absolute bottom-0 right-0 bg-purple-500 text-white p-2 rounded-full hover:bg-purple-600 transition-colors">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                          d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                          d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                 </button>
               </div>
@@ -57,24 +56,24 @@
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2">Имя</label>
-                  <input type="text" v-model="profileForm.name" 
-                         class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                  <input type="text" v-model="profileForm.name"
+                    class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2">Фамилия</label>
-                  <input type="text" v-model="profileForm.secondname" 
-                         class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                  <input type="text" v-model="profileForm.secondname"
+                    class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
                 </div>
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                <input type="email" v-model="profileForm.email" 
-                       class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                       disabled>
+                <input type="email" v-model="profileForm.email"
+                  class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  disabled>
                 <p class="text-sm text-gray-500 mt-1">Email нельзя изменить</p>
               </div>
               <button type="submit" :disabled="profileLoading"
-                      class="bg-purple-500 text-white px-6 py-3 rounded-xl hover:bg-purple-600 transition-colors disabled:opacity-50">
+                class="bg-purple-500 text-white px-6 py-3 rounded-xl hover:bg-purple-600 transition-colors disabled:opacity-50">
                 <span v-if="profileLoading">Сохранение...</span>
                 <span v-else>Сохранить изменения</span>
               </button>
@@ -87,21 +86,21 @@
             <form @submit.prevent="changePassword" class="space-y-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Текущий пароль</label>
-                <input :type="showCurrentPassword ? 'text' : 'password'" v-model="passwordForm.currentPassword" 
-                       class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <input :type="showCurrentPassword ? 'text' : 'password'" v-model="passwordForm.currentPassword"
+                  class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Новый пароль</label>
-                <input :type="showNewPassword ? 'text' : 'password'" v-model="passwordForm.newPassword" 
-                       class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <input :type="showNewPassword ? 'text' : 'password'" v-model="passwordForm.newPassword"
+                  class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Подтвердите новый пароль</label>
-                <input :type="showConfirmPassword ? 'text' : 'password'" v-model="passwordForm.confirmPassword" 
-                       class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <input :type="showConfirmPassword ? 'text' : 'password'" v-model="passwordForm.confirmPassword"
+                  class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
               </div>
               <button type="submit" :disabled="passwordLoading"
-                      class="bg-purple-500 text-white px-6 py-3 rounded-xl hover:bg-purple-600 transition-colors disabled:opacity-50">
+                class="bg-purple-500 text-white px-6 py-3 rounded-xl hover:bg-purple-600 transition-colors disabled:opacity-50">
                 <span v-if="passwordLoading">Смена пароля...</span>
                 <span v-else>Сменить пароль</span>
               </button>
@@ -111,9 +110,10 @@
           <!-- Опасная зона -->
           <div class="bg-white rounded-2xl shadow-sm border border-red-200 p-6">
             <h3 class="text-lg font-semibold text-red-700 mb-4">Опасная зона</h3>
-            <p class="text-gray-600 mb-4">Удаление аккаунта невозможно отменить. Все ваши данные будут безвозвратно удалены.</p>
+            <p class="text-gray-600 mb-4">Удаление аккаунта невозможно отменить. Все ваши данные будут безвозвратно
+              удалены.</p>
             <button @click="showDeleteModal = true"
-                    class="bg-red-500 text-white px-6 py-3 rounded-xl hover:bg-red-600 transition-colors">
+              class="bg-red-500 text-white px-6 py-3 rounded-xl hover:bg-red-600 transition-colors">
               Удалить аккаунт
             </button>
           </div>
@@ -128,17 +128,16 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">URL аватара</label>
-            <input type="text" v-model="avatarForm.url" 
-                   placeholder="https://example.com/avatar.jpg"
-                   class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            <input type="text" v-model="avatarForm.url" placeholder="https://example.com/avatar.jpg"
+              class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
           </div>
           <div class="flex justify-end space-x-3">
-            <button @click="showAvatarModal = false" 
-                    class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors">
+            <button @click="showAvatarModal = false"
+              class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors">
               Отмена
             </button>
             <button @click="updateAvatar" :disabled="avatarLoading"
-                    class="bg-purple-500 text-white px-6 py-2 rounded-xl hover:bg-purple-600 transition-colors disabled:opacity-50">
+              class="bg-purple-500 text-white px-6 py-2 rounded-xl hover:bg-purple-600 transition-colors disabled:opacity-50">
               <span v-if="avatarLoading">Сохранение...</span>
               <span v-else>Сохранить</span>
             </button>
@@ -156,16 +155,16 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">
             Введите "УДАЛИТЬ" для подтверждения
           </label>
-          <input type="text" v-model="deleteConfirmation" 
-                 class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+          <input type="text" v-model="deleteConfirmation"
+            class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
         </div>
         <div class="flex justify-end space-x-3">
-          <button @click="showDeleteModal = false" 
-                  class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors">
+          <button @click="showDeleteModal = false"
+            class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors">
             Отмена
           </button>
           <button @click="deleteAccount" :disabled="deleteConfirmation !== 'УДАЛИТЬ' || deleteLoading"
-                  class="bg-red-500 text-white px-6 py-2 rounded-xl hover:bg-red-600 transition-colors disabled:opacity-50">
+            class="bg-red-500 text-white px-6 py-2 rounded-xl hover:bg-red-600 transition-colors disabled:opacity-50">
             <span v-if="deleteLoading">Удаление...</span>
             <span v-else>Удалить аккаунт</span>
           </button>
@@ -222,7 +221,7 @@ const showConfirmPassword = ref(false);
 // Обновление профиля
 async function updateProfile() {
   if (profileLoading.value) return;
-  
+
   profileLoading.value = true;
   try {
     const updatedUser = await $fetch(`/api/users/${user.value.id}`, {
@@ -236,7 +235,7 @@ async function updateProfile() {
     // Обновляем store
     authStore.user = updatedUser;
     user.value = updatedUser;
-    
+
     alert('Профиль успешно обновлен!');
   } catch (error) {
     alert(error.data?.statusMessage || 'Ошибка при обновлении профиля');
@@ -248,7 +247,7 @@ async function updateProfile() {
 // Смена пароля
 async function changePassword() {
   if (passwordLoading.value) return;
-  
+
   if (passwordForm.newPassword !== passwordForm.confirmPassword) {
     alert('Новые пароли не совпадают');
     return;
@@ -273,7 +272,7 @@ async function changePassword() {
     passwordForm.currentPassword = '';
     passwordForm.newPassword = '';
     passwordForm.confirmPassword = '';
-    
+
     alert('Пароль успешно изменен!');
   } catch (error) {
     alert(error.data?.statusMessage || 'Ошибка при смене пароля');
@@ -285,7 +284,7 @@ async function changePassword() {
 // Обновление аватара
 async function updateAvatar() {
   if (avatarLoading.value) return;
-  
+
   avatarLoading.value = true;
   try {
     const updatedUser = await $fetch(`/api/users/${user.value.id}`, {
@@ -298,7 +297,7 @@ async function updateAvatar() {
     // Обновляем store
     authStore.user = updatedUser;
     user.value = updatedUser;
-    
+
     showAvatarModal.value = false;
     alert('Аватар успешно обновлен!');
   } catch (error) {
@@ -311,7 +310,7 @@ async function updateAvatar() {
 // Удаление аккаунта
 async function deleteAccount() {
   if (deleteLoading.value) return;
-  
+
   deleteLoading.value = true;
   try {
     await $fetch(`/api/users/${user.value.id}`, {
@@ -321,7 +320,7 @@ async function deleteAccount() {
     // Выходим из аккаунта
     await authStore.logout();
     await navigateTo('/');
-    
+
     alert('Аккаунт успешно удален');
   } catch (error) {
     alert(error.data?.statusMessage || 'Ошибка при удалении аккаунта');
