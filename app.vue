@@ -6,12 +6,14 @@
   </div>
 </template>
 <script setup>
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores/auth'
 
-const authStore = useAuthStore();
+const authStore = useAuthStore()
 
-// Инициализируем состояние авторизации при запуске приложения
+// Инициализируем состояние аутентификации при запуске приложения
 onMounted(() => {
-  authStore.initialize();
-});
+  if (process.client) {
+    authStore.initialize()
+  }
+})
 </script>

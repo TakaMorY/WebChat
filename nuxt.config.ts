@@ -10,11 +10,8 @@ export default defineNuxtConfig({
 
   ],
   runtimeConfig: {
-    // Переменные, доступные только на сервере
     supabaseUrl: process.env.SUPABASE_URL,
     supabaseKey: process.env.SUPABASE_KEY,
-
-    // Переменные, доступные и на клиенте
     public: {
       supabaseUrl: process.env.SUPABASE_URL,
       supabaseKey: process.env.SUPABASE_KEY,

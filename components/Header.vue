@@ -87,33 +87,34 @@
 
                 <!-- Блок пользователя (авторизован) -->
                 <div v-if="authStore.isAuthenticated" class="hidden lg:flex items-center space-x-4">
-                    <!-- Аватар и имя пользователя (кликабельные) -->
+                    <!-- Аватар и имя пользователя -->
                     <NuxtLink to="/profile" class="flex items-center space-x-3 group cursor-pointer">
                         <!-- Аватар -->
                         <div class="relative">
-                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center text-white font-semibold text-sm group-hover:scale-105 transition-transform"
-                                v-if="!userAvatar">
-                                {{ userInitials }}
+                            <div v-if="!authStore.avatarUrl"
+                                class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center text-white font-semibold text-sm group-hover:scale-105 transition-transform">
+                                {{ authStore.initials }}
                             </div>
-                            <img v-else :src="userAvatar" alt="Аватар"
+                            <img v-else :src="authStore.avatarUrl" alt="Аватар"
                                 class="w-10 h-10 rounded-full object-cover border-2 border-purple-200 group-hover:scale-105 transition-transform">
                         </div>
 
                         <!-- Имя пользователя -->
                         <div class="flex flex-col">
                             <span
-                                class="text-sm font-medium text-gray-900 group-hover:text-purple-600 transition-colors">{{
-                                    userName }}</span>
+                                class="text-sm font-medium text-gray-900 group-hover:text-purple-600 transition-colors">
+                                {{ authStore.fullName }}
+                            </span>
                             <span class="text-xs text-gray-500">Онлайн</span>
                         </div>
                     </NuxtLink>
 
                     <!-- Кнопка выхода -->
-                    <button @click="logout" :disabled="logoutLoading"
+                    <button @click="handleLogout" :disabled="authStore.isLoading"
                         class="flex items-center space-x-2 bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2.5 rounded-xl hover:from-red-600 hover:to-red-700 transition-all shadow-lg shadow-red-200 group disabled:opacity-50 disabled:cursor-not-allowed">
                         <ClientOnly>
-                            <svg v-if="logoutLoading" class="w-4 h-4 animate-spin" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
+                            <svg v-if="authStore.isLoading" class="w-4 h-4 animate-spin" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                             </svg>
@@ -123,7 +124,7 @@
                                     d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                             </svg>
                         </ClientOnly>
-                        <span>{{ logoutLoading ? 'Выход...' : 'Выйти' }}</span>
+                        <span>{{ authStore.isLoading ? 'Выход...' : 'Выйти' }}</span>
                     </button>
                 </div>
             </div>
@@ -153,29 +154,30 @@
                         <NuxtLink to="/profile" class="flex items-center space-x-3 mb-4 group" @click="closeMobileMenu">
                             <!-- Аватар -->
                             <div class="relative">
-                                <div class="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center text-white font-semibold text-sm group-hover:scale-105 transition-transform"
-                                    v-if="!userAvatar">
-                                    {{ userInitials }}
+                                <div v-if="!authStore.avatarUrl"
+                                    class="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center text-white font-semibold text-sm group-hover:scale-105 transition-transform">
+                                    {{ authStore.initials }}
                                 </div>
-                                <img v-else :src="userAvatar" alt="Аватар"
+                                <img v-else :src="authStore.avatarUrl" alt="Аватар"
                                     class="w-12 h-12 rounded-full object-cover border-2 border-purple-200 group-hover:scale-105 transition-transform">
                             </div>
 
                             <!-- Имя пользователя -->
                             <div class="flex flex-col">
                                 <span
-                                    class="text-sm font-medium text-gray-900 group-hover:text-purple-600 transition-colors">{{
-                                        userName }}</span>
+                                    class="text-sm font-medium text-gray-900 group-hover:text-purple-600 transition-colors">
+                                    {{ authStore.fullName }}
+                                </span>
                                 <span class="text-xs text-gray-500">Онлайн</span>
                             </div>
                         </NuxtLink>
 
                         <!-- Кнопка выхода в мобильном меню -->
-                        <button @click="logout" :disabled="logoutLoading"
+                        <button @click="handleLogout" :disabled="authStore.isLoading"
                             class="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-3 rounded-xl hover:from-red-600 hover:to-red-700 transition-all shadow-lg shadow-red-200 group disabled:opacity-50 disabled:cursor-not-allowed">
                             <ClientOnly>
-                                <svg v-if="logoutLoading" class="w-4 h-4 animate-spin" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
+                                <svg v-if="authStore.isLoading" class="w-4 h-4 animate-spin" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                 </svg>
@@ -185,7 +187,7 @@
                                         d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                                 </svg>
                             </ClientOnly>
-                            <span>{{ logoutLoading ? 'Выход...' : 'Выйти из аккаунта' }}</span>
+                            <span>{{ authStore.isLoading ? 'Выход...' : 'Выйти из аккаунта' }}</span>
                         </button>
                     </div>
 
@@ -208,54 +210,34 @@
 </template>
 
 <script setup>
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores/auth'
 
-const authStore = useAuthStore();
-const logoutLoading = ref(false);
+const authStore = useAuthStore()
+const mobileMenuOpen = ref(false)
 
-// Инициализируем состояние авторизации при загрузке компонента
+// Инициализируем auth store при загрузке компонента
 onMounted(() => {
-    authStore.initialize();
-});
-
-// Вычисляемые свойства для данных пользователя
-const userAvatar = computed(() => authStore.user?.avatar_url || null);
-const userName = computed(() => {
-    if (authStore.user?.name && authStore.user?.secondname) {
-        return `${authStore.user.name} ${authStore.user.secondname}`;
+    if (process.client) {
+        authStore.initialize()
     }
-    return authStore.user?.email || 'Пользователь';
-});
-const userInitials = computed(() => {
-    if (authStore.user?.name && authStore.user?.secondname) {
-        return `${authStore.user.name[0]}${authStore.user.secondname[0]}`.toUpperCase();
-    }
-    return authStore.user?.email?.[0]?.toUpperCase() || 'U';
-});
+})
 
-// Функция выхода
-const logout = async () => {
-    if (logoutLoading.value) return;
-
-    logoutLoading.value = true;
+// Обработчик выхода
+const handleLogout = async () => {
     try {
-        // Просто вызываем logout - страница обновится автоматически
-        authStore.logout();
+        await authStore.logout()
+        // Страница автоматически обновится после logout
     } catch (error) {
-        console.error('Ошибка при выходе:', error);
-    } finally {
-        logoutLoading.value = false;
-        closeMobileMenu();
+        console.error('Logout error:', error)
     }
-};
+}
 
-const mobileMenuOpen = ref(false);
-
+// Управление мобильным меню
 const toggleMobileMenu = () => {
-    mobileMenuOpen.value = !mobileMenuOpen.value;
-};
+    mobileMenuOpen.value = !mobileMenuOpen.value
+}
 
 const closeMobileMenu = () => {
-    mobileMenuOpen.value = false;
-};
+    mobileMenuOpen.value = false
+}
 </script>

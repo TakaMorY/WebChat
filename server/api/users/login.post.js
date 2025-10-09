@@ -9,72 +9,75 @@ export default defineEventHandler(async (event) => {
 
     console.log('📧 Login attempt for:', email)
 
-    // Проверка обязательных полей
+    // Валидация входных данных
     if (!email || !password) {
-      console.log('❌ Missing email or password')
+      console.log('❌ Missing credentials')
       throw createError({
         statusCode: 400,
         statusMessage: 'Email и пароль обязательны'
       })
     }
 
-    // Проверка email
+    // Проверка формата email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
-      console.log('❌ Invalid email format:', email)
+      console.log('❌ Invalid email format')
       throw createError({
         statusCode: 400,
         statusMessage: 'Некорректный формат email'
       })
     }
 
-    // Хешируем пароль для сравнения (ТАК ЖЕ КАК ПРИ РЕГИСТРАЦИИ!)
-    const hashedPassword = Buffer.from(password).toString('base64')
-    console.log('🔑 Password hashed for comparison')
+    // Проверка длины пароля
+    if (password.length < 6) {
+      console.log('❌ Password too short')
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'Пароль должен содержать минимум 6 символов'
+      })
+    }
 
-    // Ищем пользователя в Supabase
-    console.log('🔍 Searching user in Supabase...')
-    const { data: user, error } = await supabase
+    // Ищем пользователя в базе
+    console.log('🔍 Searching user in database...')
+    const { data: user, error: userError } = await supabase
       .from('users')
       .select('*')
-      .eq('email', email)
+      .eq('email', email.trim().toLowerCase())
       .single()
 
-    console.log('📊 Supabase response:', {
-      userFound: !!user,
-      error: error?.message,
-      userEmail: user?.email
-    })
+    if (userError) {
+      console.log('❌ Database error:', userError)
 
-    if (error) {
-      console.log('❌ Supabase search error:', error)
-
-      if (error.code === 'PGRST116') { // Not found
+      if (userError.code === 'PGRST116') {
         throw createError({
           statusCode: 401,
-          statusMessage: 'Неверный email или пароль'
+          statusMessage: 'Пользователь с таким email не найден'
         })
       }
 
       throw createError({
         statusCode: 500,
-        statusMessage: `Ошибка базы данных: ${error.message}`
+        statusMessage: 'Ошибка базы данных'
       })
     }
 
     if (!user) {
-      console.log('❌ User not found for email:', email)
+      console.log('❌ User not found')
       throw createError({
         statusCode: 401,
         statusMessage: 'Неверный email или пароль'
       })
     }
 
-    console.log('🔑 Comparing passwords...')
-    console.log('   Stored hash:', user.password)
-    console.log('   Input hash:', hashedPassword)
+    console.log('✅ User found:', user.email)
 
-    // Проверяем пароль
+    // Проверяем пароль (используем тот же алгоритм хеширования, что и при регистрации)
+    const hashedPassword = Buffer.from(password).toString('base64')
+    console.log('🔑 Password verification:', {
+      stored: user.password?.substring(0, 10) + '...',
+      provided: hashedPassword.substring(0, 10) + '...'
+    })
+
     if (user.password !== hashedPassword) {
       console.log('❌ Password mismatch')
       throw createError({
@@ -83,17 +86,40 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    // Не возвращаем пароль
+    // Обновляем время последнего входа
+    const { error: updateError } = await supabase
+      .from('users')
+      .update({ last_login: new Date().toISOString() })
+      .eq('id', user.id)
+
+    if (updateError) {
+      console.log('⚠️ Failed to update last login:', updateError)
+      // Не прерываем вход из-за этой ошибки
+    }
+
+    // Подготавливаем ответ (убираем пароль)
     const { password: _, ...userWithoutPassword } = user
+
     console.log('✅ Login successful for:', user.email)
 
-    return userWithoutPassword
+    return {
+      success: true,
+      user: userWithoutPassword,
+      message: 'Вход выполнен успешно'
+    }
 
   } catch (error) {
-    console.error('💥 Login error:', error)
+    console.error('💥 Login process failed:', error)
+
+    // Если это уже наша кастомная ошибка, пробрасываем как есть
+    if (error.statusCode) {
+      throw error
+    }
+
+    // Для непредвиденных ошибок
     throw createError({
-      statusCode: error.statusCode || 500,
-      statusMessage: error.message || 'Ошибка при входе'
+      statusCode: 500,
+      statusMessage: 'Внутренняя ошибка сервера. Попробуйте позже.'
     })
   }
 })
