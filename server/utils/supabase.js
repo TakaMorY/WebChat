@@ -1,46 +1,37 @@
 import { createClient } from '@supabase/supabase-js'
 
-// Глобальный кэш клиента Supabase
-let supabaseClient = null
-
-export function createSupabaseClient() {
-    if (supabaseClient) {
-        return supabaseClient
-    }
-
+export default function useSupabase() {
     const config = useRuntimeConfig()
-    const supabaseUrl = config.supabaseUrl
-    const supabaseKey = config.supabaseKey
 
-    if (!supabaseUrl || !supabaseKey) {
-        console.error('❌ Supabase: Missing environment variables')
-        throw new Error('Missing Supabase environment variables')
-    }
-
-    console.log('🚀 Supabase: Creating optimized client for localhost')
-
-    supabaseClient = createClient(supabaseUrl, supabaseKey, {
-        auth: {
-            persistSession: false,      // Не сохраняем сессию
-            autoRefreshToken: false,    // Не обновляем токен автоматически
-            detectSessionInUrl: false   // Не проверяем URL на сессии
-        },
-        global: {
-            headers: {
-                'X-Client-Info': 'webchat-localhost'
-            },
-            // Оптимизация fetch для localhost
-            fetch: (...args) => {
-                return fetch(...args)
-            }
-        },
-        db: {
-            schema: 'public'
-        }
+    console.log('🔧 Initializing Supabase client...')
+    console.log('📋 Config check:', {
+        hasUrl: !!config.supabaseUrl,
+        hasKey: !!config.supabaseKey,
+        urlLength: config.supabaseUrl?.length,
+        keyLength: config.supabaseKey?.length
     })
 
-    return supabaseClient
+    // Проверяем наличие обязательных переменных
+    if (!config.supabaseUrl || !config.supabaseKey) {
+        console.error('❌ Missing Supabase environment variables')
+        throw new Error('Supabase URL and Key are required')
+    }
+
+    const supabase = createClient(
+        config.supabaseUrl,
+        config.supabaseKey,
+        {
+            auth: {
+                autoRefreshToken: false,
+                persistSession: false,
+                detectSessionInUrl: false
+            }
+        }
+    )
+
+    console.log('✅ Supabase client created')
+    return supabase
 }
 
-// Экспортируем функцию вместо прямого экземпляра
-export const supabase = createSupabaseClient()
+// Экспортируем инстанс для использования в API routes
+export const supabase = useSupabase()

@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
-  devtools: { enabled: false },
+  devtools: { enabled: true },
   modules: [
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
@@ -10,10 +10,16 @@ export default defineNuxtConfig({
 
   ],
   runtimeConfig: {
+    // Переменные, доступные только на сервере
     supabaseUrl: process.env.SUPABASE_URL,
-    supabaseKey: process.env.SUPABASE_KEY
-  },
+    supabaseKey: process.env.SUPABASE_KEY,
 
+    // Переменные, доступные и на клиенте
+    public: {
+      supabaseUrl: process.env.SUPABASE_URL,
+      supabaseKey: process.env.SUPABASE_KEY,
+    }
+  },
 
 
   ssr: true,
